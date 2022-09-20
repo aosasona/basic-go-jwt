@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func Connect() {
+func Connection() *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("../database.db"), &gorm.Config{})
 	if err != nil {
 		panic("Unable to connect to database")
@@ -14,6 +14,7 @@ func Connect() {
 
 	err = db.AutoMigrate(&models.User{}, &models.Note{})
 	if err != nil {
-		return
+		panic("Unable to migrate database")
 	}
+	return db
 }

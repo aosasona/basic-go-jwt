@@ -1,7 +1,7 @@
 package main
 
 import (
-	"basic-crud-api/routes"
+	"basic-crud-api/controllers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
@@ -15,13 +15,18 @@ func main() {
 		panic("Unable to load .env file")
 	}
 	port := ":" + os.Getenv("PORT")
+
 	r := mux.NewRouter()
-	r.HandleFunc("/", routes.Index).Methods("GET")
+	r.Use(mux.CORSMethodMiddleware(r))
+	r.Headers("Accept", "application/json")
+
+	r.HandleFunc("/", controllers.Index).Methods("GET")
+	r.HandleFunc("/users", controllers.CreateUser).Methods("POST")
+
 	http.Handle("/", r)
 	log.Printf("Server listening on port %s", port)
 	err = http.ListenAndServe(port, nil)
 	if err != nil {
 		panic(err)
 	}
-
 }
