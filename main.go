@@ -2,6 +2,8 @@ package main
 
 import (
 	"basic-crud-api/controllers"
+	"basic-crud-api/models"
+	"basic-crud-api/utils"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
@@ -15,6 +17,12 @@ func main() {
 		panic("Unable to load .env file")
 	}
 	port := ":" + os.Getenv("PORT")
+
+	db := utils.Connection()
+	err = db.AutoMigrate(&models.User{}, &models.Note{})
+	if err != nil {
+		panic("Unable to migrate database")
+	}
 
 	r := mux.NewRouter()
 	r.Use(mux.CORSMethodMiddleware(r))
