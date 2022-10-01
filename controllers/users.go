@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"basic-crud-api/models"
 	"basic-crud-api/types"
 	"basic-crud-api/utils"
 	"encoding/json"
@@ -49,7 +50,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	payload := types.User{
+	payload := models.User{
 		FirstName: body.FirstName,
 		LastName:  body.LastName,
 		Email:     body.Email,
@@ -63,7 +64,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Print(err.Error())
 		utils.CreateResponse(w, utils.ResponseBody{
-			Message: "Something went wrong",
+			Message: "something went wrong",
 			Code:    http.StatusInternalServerError,
 			Data:    nil,
 		})

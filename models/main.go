@@ -10,6 +10,7 @@ type User struct {
 	ID        uint      `gorm:"primaryKey" json:"id"`
 	FirstName string    `json:"first_name" validate:"nonzero,min=2,max=100"`
 	LastName  string    `json:"last_name" validate:"nonzero,min=2,max=100"`
+	Email     string    `json:"email" validate:"nonzero,min=6,max=100,email"`
 	Password  string    `json:"password" validate:"nonzero,min=6"`
 	CreatedAt time.Time `json:"created_at"`
 }
