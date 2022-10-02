@@ -1,4 +1,4 @@
-module basic-crud-api
+module basic-jwt-api
 
 go 1.18
 

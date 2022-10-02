@@ -1,10 +1,11 @@
 package main
 
 import (
-	"basic-crud-api/controllers"
-	"basic-crud-api/models"
-	"basic-crud-api/utils"
+	"basic-jwt-api/controllers"
+	"basic-jwt-api/models"
+	"basic-jwt-api/utils"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
@@ -12,10 +13,12 @@ import (
 
 func main() {
 
-	//err := godotenv.Load()
-	//if err != nil {
-	//	panic("Unable to load .env file")
-	//}
+	if os.Getenv("ENV") == "development" {
+		err := godotenv.Load()
+		if err != nil {
+			panic("Unable to load .env file")
+		}
+	}
 	port := ":" + os.Getenv("PORT")
 
 	db := utils.Connection()

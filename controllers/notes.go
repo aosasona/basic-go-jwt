@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"basic-crud-api/models"
-	"basic-crud-api/types"
-	"basic-crud-api/utils"
+	"basic-jwt-api/models"
+	"basic-jwt-api/types"
+	"basic-jwt-api/utils"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
