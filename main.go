@@ -5,21 +5,21 @@ import (
 	"basic-crud-api/models"
 	"basic-crud-api/utils"
 	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		panic("Unable to load .env file")
-	}
+
+	//err := godotenv.Load()
+	//if err != nil {
+	//	panic("Unable to load .env file")
+	//}
 	port := ":" + os.Getenv("PORT")
 
 	db := utils.Connection()
-	err = db.AutoMigrate(&models.User{}, &models.Note{})
+	err := db.AutoMigrate(&models.User{}, &models.Note{})
 	if err != nil {
 		panic("Unable to migrate database")
 	}
