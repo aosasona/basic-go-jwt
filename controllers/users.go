@@ -137,7 +137,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	db.Where("email = ?", body.Email).First(&user)
 
-	if user.ID == 0 {
+	if user.UUID == "" {
 		utils.CreateResponse(w, utils.ResponseBody{
 			Message: "invalid credentials",
 			Code:    http.StatusBadRequest,

@@ -17,16 +17,6 @@ type User struct {
 	Notes     []Note     `json:"notes"`
 }
 
-type Note struct {
-	gorm.Model
-	UUID      string     `gorm:"primaryKey" json:"id"`
-	Title     string     `json:"title" validate:"nonzero,min=2,max=100"`
-	Body      string     `json:"body" validate:"nonzero,min=2,max=1500"`
-	UserUUID  string     `gorm:"foreignKey" json:"user_id"`
-	User      *User      `json:"user,omitempty"`
-	CreatedAt *time.Time `gorm:"autoCreateTime" json:"created_at"`
-}
-
 func (u *User) CheckAlreadyExists(db *gorm.DB) bool {
 	var count int64
 	db.Model(&User{}).Where("email = ?", u.Email).Count(&count)
@@ -35,10 +25,5 @@ func (u *User) CheckAlreadyExists(db *gorm.DB) bool {
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 	u.UUID = uuid.New().String()
-	return nil
-}
-
-func (n *Note) BeforeCreate(tx *gorm.DB) (err error) {
-	n.UUID = uuid.New().String()
 	return nil
 }
