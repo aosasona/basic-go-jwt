@@ -29,7 +29,8 @@ func main() {
 	r.Headers("Accept", "application/json")
 
 	r.HandleFunc("/", controllers.Index).Methods("GET")
-	r.HandleFunc("/users", controllers.CreateUser).Methods("POST")
+	r.HandleFunc("/auth/signup", controllers.CreateUser).Methods("POST")
+	r.HandleFunc("/auth/login", controllers.LoginUser).Methods("POST")
 
 	http.Handle("/", r)
 	log.Printf("Server listening on port %s", port)

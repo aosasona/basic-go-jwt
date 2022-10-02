@@ -45,6 +45,20 @@ func (u *User) Validate() (bool, error) {
 	return true, nil
 }
 
+func (u *User) ValidateLoginData() (bool, error) {
+	emailRegex := `^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$`
+	if u.Email == "" || len(u.Email) < 6 || len(u.Email) > 100 || !regexp.MustCompile(emailRegex).MatchString(u.Email) {
+		return false, errors.New("e-mail is invalid or missing")
+	}
+	if u.Password == "" {
+		return false, errors.New("password is required")
+	}
+	if len(u.Password) < 6 {
+		return false, errors.New("password must be at least 6 characters")
+	}
+	return true, nil
+}
+
 func (u *User) HashPassword() (string, error) {
 	bytePassword := []byte(u.Password)
 	hashedPassword, err := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
