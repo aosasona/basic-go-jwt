@@ -31,6 +31,7 @@ func main() {
 	r.HandleFunc("/", controllers.Index).Methods("GET")
 	r.HandleFunc("/auth/signup", controllers.CreateUser).Methods("POST")
 	r.HandleFunc("/auth/login", controllers.LoginUser).Methods("POST")
+	r.HandleFunc("/me", controllers.GetCurrentUserData).Methods("GET")
 
 	http.Handle("/", r)
 	log.Printf("Server listening on port %s", port)

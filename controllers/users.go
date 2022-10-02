@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 type SignUpResponse struct {
@@ -173,6 +174,40 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		Message: "welcome back",
 		Code:    http.StatusOK,
 		Data:    res,
+	})
+	return
+}
+
+func GetCurrentUserData(w http.ResponseWriter, r *http.Request) {
+	var user types.User
+	uuid, err := utils.ReadUserUUID(r)
+
+	if err != nil {
+		utils.CreateResponse(w, utils.ResponseBody{
+			Message: err.Error(),
+			Code:    http.StatusBadRequest,
+			Data:    nil,
+		})
+		return
+	}
+
+	db := utils.Connection()
+	res := db.Select("uuid, first_name, last_name, email").Where("uuid = ?", uuid).First(&user)
+	if res.Error != nil {
+		utils.CreateResponse(w, utils.ResponseBody{
+			Message: "something went wrong",
+			Code:    http.StatusInternalServerError,
+			Data:    nil,
+		})
+		return
+	}
+
+	msg := fmt.Sprintf("hello there, %s!", strings.ToLower(user.FirstName))
+
+	utils.CreateResponse(w, utils.ResponseBody{
+		Message: msg,
+		Code:    http.StatusOK,
+		Data:    user,
 	})
 	return
 }
