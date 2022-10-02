@@ -6,7 +6,7 @@ import (
 )
 
 func Connection() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("../database.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("data.sqlite"), &gorm.Config{})
 	if err != nil {
 		panic("Unable to connect to database")
 	}

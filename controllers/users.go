@@ -10,7 +10,7 @@ import (
 )
 
 type Response struct {
-	ID        uint   `json:"id"`
+	ID        string `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 }
@@ -59,9 +59,17 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	db := utils.Connection()
 
+	if payload.CheckAlreadyExists(db) {
+		utils.CreateResponse(w, utils.ResponseBody{
+			Message: "user already exists",
+			Code:    http.StatusBadRequest,
+			Data:    nil,
+		})
+		return
+	}
+
 	res := db.Create(&payload)
-	err = res.Error
-	if err != nil {
+	if err = res.Error; err != nil {
 		fmt.Print(err.Error())
 		utils.CreateResponse(w, utils.ResponseBody{
 			Message: "something went wrong",
@@ -77,7 +85,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		Message: msg,
 		Code:    http.StatusCreated,
 		Data: Response{
-			ID:        payload.ID,
+			ID:        payload.UUID,
 			FirstName: payload.FirstName,
 			LastName:  payload.LastName,
 		},
