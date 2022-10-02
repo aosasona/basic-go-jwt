@@ -31,7 +31,10 @@ func main() {
 	r.HandleFunc("/", controllers.Index).Methods("GET")
 	r.HandleFunc("/auth/signup", controllers.CreateUser).Methods("POST")
 	r.HandleFunc("/auth/login", controllers.LoginUser).Methods("POST")
-	r.HandleFunc("/me", controllers.GetCurrentUserData).Methods("GET")
+	r.HandleFunc("/me", controllers.GetCurrentUser).Methods("GET")
+	r.HandleFunc("/notes", controllers.CreateNote).Methods("POST")
+	r.HandleFunc("/notes", controllers.GetAllNotes).Methods("GET")
+	r.HandleFunc("/notes/{id}", controllers.GetNote).Methods("GET")
 
 	http.Handle("/", r)
 	log.Printf("Server listening on port %s", port)

@@ -21,15 +21,18 @@ func CreateResponse(w http.ResponseWriter, body ResponseBody) {
 	} else {
 		statusCode = http.StatusOK
 	}
+	success := statusCode >= 200 && statusCode < 300
 	err := json.NewEncoder(w).Encode(map[string]any{
 		"message": message,
 		"code":    statusCode,
+		"success": success,
 		"data":    data,
 	})
 	if err != nil {
 		err := json.NewEncoder(w).Encode(map[string]any{
 			"message": message,
 			"code":    statusCode,
+			"success": success,
 			"data":    data,
 		})
 		if err != nil {

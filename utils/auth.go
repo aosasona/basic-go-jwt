@@ -64,3 +64,16 @@ func ReadUserUUID(r *http.Request) (string, error) {
 
 	return claims["uuid"].(string), nil
 }
+
+func ExtractUserFromJWT(w http.ResponseWriter, r *http.Request) (string, bool) {
+	uuid, err := ReadUserUUID(r)
+	if err != nil {
+		CreateResponse(w, ResponseBody{
+			Message: err.Error(),
+			Code:    http.StatusUnauthorized,
+			Data:    nil,
+		})
+		return "", true
+	}
+	return uuid, false
+}

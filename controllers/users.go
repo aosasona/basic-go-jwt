@@ -6,6 +6,7 @@ import (
 	"basic-crud-api/utils"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -178,22 +179,17 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func GetCurrentUserData(w http.ResponseWriter, r *http.Request) {
+func GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	var user types.User
-	uuid, err := utils.ReadUserUUID(r)
-
-	if err != nil {
-		utils.CreateResponse(w, utils.ResponseBody{
-			Message: err.Error(),
-			Code:    http.StatusBadRequest,
-			Data:    nil,
-		})
+	uuid, done := utils.ExtractUserFromJWT(w, r)
+	if done {
 		return
 	}
 
 	db := utils.Connection()
 	res := db.Select("uuid, first_name, last_name, email").Where("uuid = ?", uuid).First(&user)
 	if res.Error != nil {
+		log.Print(res.Error)
 		utils.CreateResponse(w, utils.ResponseBody{
 			Message: "something went wrong",
 			Code:    http.StatusInternalServerError,
